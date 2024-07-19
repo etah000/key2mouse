@@ -53,12 +53,17 @@ Menu,Tray,Click,1
 IN_LOOP := false
 QUICK_MODE := true
 MOUSE_KEYBOARD_MODEL := false
+NUMPAD_MOUSE_MODEL := false
 CLICK_KEY := ""
 
 ; start hot key config
 iniread,TurnOn,%INI_PATH%,Start,SwitchOnOff
 iniread,StartWithLocationMode,%INI_PATH%,Start,StartWithLocationMode
 Hotkey,%TurnOn%,SwitchMouseKeyboardModel
+
+; numpad click mode 
+iniread,Numpad_On,%INI_PATH%,Start,Numpad_OnOff
+Hotkey,%Numpad_On%,SwitchNumpadMouseModel
 
 STARTED := false 
 
@@ -429,11 +434,21 @@ return
 ; start and stop
 SwitchMouseKeyboardModel:
 	global STARTED
-        if STARTED
+    if STARTED
 		gosub, Stop
 	else
 		gosub, Start
 return 
+
+SwitchNumpadMouseModel:
+	global NUMPAD_MOUSE_MODEL
+	if NUMPAD_MOUSE_MODEL
+		NUMPAD_MOUSE_MODEL := false
+		SetSystemCursor()
+	else 
+		NUMPAD_MOUSE_MODEL := true 
+		RestoreSystemCursor()
+return
 
 TurnOnMouseKeyboardMode:
 	global MOUSE_KEYBOARD_MODEL
@@ -443,7 +458,6 @@ return
 
 
 TurnOffMouseKeyboardMode:
-
 	global MOUSE_KEYBOARD_MODEL
 	If MOUSE_KEYBOARD_MODEL
 	{
