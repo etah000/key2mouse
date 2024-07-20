@@ -263,6 +263,8 @@ iniread,UseCapslock,%INI_PATH%,Start,UseCapslock+
 
 #If
 
+#If NUMPAD_MOUSE_MODEL
+#If 
 
 #If (UseSpace == "true")
 	
