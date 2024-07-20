@@ -55,6 +55,7 @@ QUICK_MODE := true
 MOUSE_KEYBOARD_MODEL := false
 NUMPAD_MOUSE_MODEL := false
 CLICK_KEY := ""
+STARTED := false 
 
 ; start hot key config
 iniread,TurnOn,%INI_PATH%,Start,SwitchOnOff
@@ -62,10 +63,19 @@ iniread,StartWithLocationMode,%INI_PATH%,Start,StartWithLocationMode
 Hotkey,%TurnOn%,SwitchMouseKeyboardModel
 
 ; numpad click mode 
-iniread,Numpad_On,%INI_PATH%,Start,Numpad_OnOff
-Hotkey,%Numpad_On%,SwitchNumpadMouseModel
+iniread,Numpad_On,%INI_PATH%,Start,NumpadOnOff
+IniRead, Use_Numpad, %INI_PATH%, Start, UseNumpad, false
+if (Use_Numpad == "true")
+	Hotkey,%Numpad_On%,SwitchNumpadMouseModel
 
-STARTED := false 
+; only for numpad mode
+IniRead, Left_Click, %INI_PATH%, Numpad, ClickLeftMouse
+IniRead, Right_Click, %INI_PATH%, Numpad, ClickRightMouse
+
+Hotkey, If, NUMPAD_MOUSE_MODEL
+Hotkey, %Left_Click%, ClickLeftMouse
+Hotkey, %Right_Click%, ClickRightMouse
+Hotkey, If
 
 iniread,ExitApp_,%INI_PATH%,Start,ExitApp
 if ExitApp_
@@ -131,16 +141,9 @@ Loop,parse,Event,`n,`r
 	
 	if (Fname == "ClickLeftMouse")
 		CLICK_KEY := Fkey
-
-	
 }
 
-
-
-
 #IfWinActive CoordGrid
-
-	
 	/*	
 	CapsLock::
 		WinSet, Transparent, 200, CoordGrid
@@ -259,7 +262,6 @@ iniread,UseCapslock,%INI_PATH%,Start,UseCapslock+
 #If MOUSE_KEYBOARD_MODEL
 
 #If
-
 
 
 #If (UseSpace == "true")
@@ -444,10 +446,8 @@ SwitchNumpadMouseModel:
 	global NUMPAD_MOUSE_MODEL
 	if NUMPAD_MOUSE_MODEL
 		NUMPAD_MOUSE_MODEL := false
-		SetSystemCursor()
 	else 
 		NUMPAD_MOUSE_MODEL := true 
-		RestoreSystemCursor()
 return
 
 TurnOnMouseKeyboardMode:

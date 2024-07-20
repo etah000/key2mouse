@@ -3,7 +3,6 @@
 return
 
 ClickRightMouse:
-
 	MouseClick, Right
 return
 
