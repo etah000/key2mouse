@@ -55,6 +55,28 @@ QUICK_MODE := true
 MOUSE_KEYBOARD_MODEL := false
 CLICK_KEY := ""
 
+NUMPAD_MOUSE_MODEL := false
+
+; ; 显示AutoHotkey版本
+; ; MsgBox, 当前运行的AutoHotkey版本是: %A_AhkVersion%
+
+; ; numpad to stimulate mouse click  
+IniRead, NumpadClickOnOff, %INI_PATH%, Numpad, SwitchNumpadOnOff
+Hotkey, %NumpadClickOnOff%, SwitchNumpadMouseModel
+
+#If NUMPAD_MOUSE_MODEL
+
+#If
+
+; ; only for numpad mode
+IniRead, Left_Click, %INI_PATH%, Numpad, ClickLeftMouse
+IniRead, Right_Click, %INI_PATH%, Numpad, ClickRightMouse
+Hotkey, If, NUMPAD_MOUSE_MODEL
+Hotkey, %Left_Click%, ClickLeftMouse
+Hotkey, %Right_Click%, ClickRightMouse
+Hotkey, If
+
+
 ; start hot key config
 iniread,TurnOn,%INI_PATH%,Start,SwitchOnOff
 iniread,StartWithLocationMode,%INI_PATH%,Start,StartWithLocationMode
@@ -481,5 +503,13 @@ ExitApp__:
 	ExitApp
 return
 
+SwitchNumpadMouseModel:
+	; MsgBox, % "这个函数是由按键组合:" A_ThisHotkey "触发的。" 
+	global NUMPAD_MOUSE_MODEL
+	if NUMPAD_MOUSE_MODEL
+        NUMPAD_MOUSE_MODEL := false
+    else  
+		NUMPAD_MOUSE_MODEL := true 
+return
 
 #Include Functions.ahk
