@@ -507,9 +507,17 @@ SwitchNumpadMouseModel:
 	; MsgBox, % "这个函数是由按键组合:" A_ThisHotkey "触发的。" 
 	global NUMPAD_MOUSE_MODEL
 	if NUMPAD_MOUSE_MODEL
+	{
         NUMPAD_MOUSE_MODEL := false
+		RestoreSystemCursor()
+	}
     else  
-		NUMPAD_MOUSE_MODEL := true 
+	{
+		gosub, TurnOffMouseKeyboardMode
+		NUMPAD_MOUSE_MODEL := true
+		SetSystemCursor()
+	}
+		 
 return
 
 #Include Functions.ahk
