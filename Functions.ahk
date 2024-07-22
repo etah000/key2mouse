@@ -118,7 +118,7 @@ SetSystemCursor(){
 	path := % A_ScriptDir "\data\Metro X\"
 	
 	;----------Replace Cursor
-	Cursors := {    "pointer"      : 32512
+	Cursors := { "pointer"      : 32512
 				,"help"         : 32651
 				,"work"         : 32650
 				,"busy"         : 32514
